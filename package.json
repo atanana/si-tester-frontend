@@ -5,5 +5,8 @@
   "license": "MIT",
   "devDependencies": {
     "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "websocket-ts": "^1.1.1"
   }
 }
