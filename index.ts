@@ -1,5 +1,7 @@
 import { getName, setName } from "./storage";
-import { ConnectionManager } from "./connection";
+import { ConnectionManager } from "./ConnectionManager";
+import { PlayersContainer } from "./PlayersContainer";
+import { GameManager } from "./GameManager";
 
 let name = getName();
 while (!name) {
@@ -9,9 +11,12 @@ while (!name) {
 
 const connection = new ConnectionManager(name);
 
-
 document.addEventListener('keydown', (event) => {
     if (event.key === ' ') {
         connection.sendAction();
     }
 });
+
+const playersContainer = new PlayersContainer(document.getElementById('playersContainer') as HTMLDivElement);
+const gameManager = new GameManager(playersContainer);
+connection.messageListener = gameManager;
