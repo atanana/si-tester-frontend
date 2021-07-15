@@ -17,21 +17,26 @@ export class PlayersContainer {
         }
     }
 
-    private createPlayerLabel(player: PlayerState): HTMLElement {
+    private createPlayerLabel(player: PlayerState): Element {
         let positionLabel = '';
         if (player.queuePosition != null) {
-            positionLabel = '<span class="tag is-warning is-medium">${player.queuePosition}</span>';
+            positionLabel = `<span class="tag is-warning is-medium">${player.queuePosition}</span>`;
+        }
+
+        let playerColorClass = 'is-link';
+        if (player.isOwner) {
+            playerColorClass = 'is-danger';
         }
 
         const doc = this.domParser.parseFromString(
            `<div class="control">
                 <div class="tags has-addons">
                     ${positionLabel}
-                    <span class="tag is-link is-medium">${player.name}</span>
+                    <span class="tag ${playerColorClass} is-medium">${player.name}</span>
                 </div>
             </div>`, 'text/html'
         );
 
-        return doc.body;
+        return doc.body.firstElementChild;
     }
 }

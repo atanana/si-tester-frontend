@@ -17,7 +17,11 @@ export class GameManager implements MessageListener {
                 console.error("Произошла ошибка: ${message.message}!");
                 break;
             case "PLAYERS_UPDATE":
-                this.state = message.players.map(player => new PlayerState(player.name, player.isOwner))
+                for (const newPlayer of message.players) {
+                    if (!this.state.find((player) => player.name === newPlayer.name)) {
+                        this.state.push(new PlayerState(newPlayer.name, newPlayer.isOwner));
+                    }
+                }
                 this.playersView.render(this.state);
                 break;
             case "QUEUE_UPDATE":
