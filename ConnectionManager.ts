@@ -30,7 +30,7 @@ export class ConnectionManager {
     }
 
     sendAction() {
-        this.socket.send(Action.action);
+        this.send(Action.action);
     }
 
     private send(action: Action) {
