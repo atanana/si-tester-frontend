@@ -3,6 +3,7 @@ import { PlayerState } from "./GameManager";
 export class PlayersContainer {
 
     private container: HTMLDivElement;
+    private domParser = new DOMParser();
 
     constructor(container: HTMLDivElement) {
         this.container = container;
@@ -17,25 +18,20 @@ export class PlayersContainer {
     }
 
     private createPlayerLabel(player: PlayerState): HTMLElement {
-        const controlElement = document.createElement('div');
-        controlElement.classList.add('control');
-
-        const tagsElement = document.createElement('div');
-        tagsElement.classList.add('tags', 'has-addons');
-        controlElement.appendChild(tagsElement);
-
+        let positionLabel = '';
         if (player.queuePosition != null) {
-            const positionElement = document.createElement('span');
-            positionElement.classList.add('tag', 'is-warning', 'is-medium');
-            positionElement.textContent = '1';
-            tagsElement.appendChild(positionElement);
+            positionLabel = '<span class="tag is-warning is-medium">${player.queuePosition}</span>';
         }
 
-        const nameElement = document.createElement('span');
-        nameElement.classList.add('tag', 'is-link', 'is-medium');
-        nameElement.textContent = player.name;
-        tagsElement.appendChild(nameElement);
+        const doc = this.domParser.parseFromString(
+           `<div class="control">
+                <div class="tags has-addons">
+                    ${positionLabel}
+                    <span class="tag is-link is-medium">${player.name}</span>
+                </div>
+            </div>`, 'text/html'
+        );
 
-        return controlElement;
+        return doc.body;
     }
 }
