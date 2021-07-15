@@ -27,7 +27,7 @@ export class GameManager implements MessageListener {
             case "QUEUE_UPDATE":
                 for (const player of this.state) {
                     const newPosition = message.queue.indexOf(player.name);
-                    player.queuePosition = newPosition > -1 ? newPosition : null;
+                    player.queuePosition = newPosition > -1 ? newPosition + 1 : null;
                 }
                 this.playersView.render(this.state);
                 break;

@@ -11,6 +11,15 @@ export class PlayersContainer {
 
     render(state: PlayerState[]) {
         this.container.textContent = '';
+        state.sort((l, r) => {
+            if (l.isOwner) {
+                return -1;
+            } else if (r.isOwner) {
+                return 1;
+            } else {
+                return (l.queuePosition || 99) - (r.queuePosition || 99);
+            }
+        });
         for (const player of state) {
             const playerLabel = this.createPlayerLabel(player);
             this.container.appendChild(playerLabel);
