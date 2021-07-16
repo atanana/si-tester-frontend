@@ -1,11 +1,12 @@
 import { PlayersContainer } from "./PlayersContainer";
-import { MessageListener } from "./ConnectionManager";
+import { MessageListener, Player } from "./ConnectionManager";
 import { ServerMessage } from "./ConnectionManager";
 
 export class GameManager implements MessageListener {
 
     private playersView: PlayersContainer;
-    private state: PlayerState[] = [];
+    private players: Player[] = [];
+    private queue: string[] = [];
 
     constructor(playersView: PlayersContainer) {
         this.playersView = playersView;
@@ -17,35 +18,39 @@ export class GameManager implements MessageListener {
                 alert(`Произошла ошибка: ${message.message}!`);
                 break;
             case "PLAYERS_UPDATE":
-                for (const newPlayer of message.players) {
-                    const player = this.state.find((player) => player.name === newPlayer.name);
-                    if (!player) {
-                        this.state.push(new PlayerState(newPlayer.name, newPlayer.isOwner));
-                    } else {
-                        player.isOwner = newPlayer.isOwner;
-                    }
-                }
-                this.playersView.render(this.state);
+                this.players = message.players
+                this.updateView();
                 break;
             case "QUEUE_UPDATE":
-                for (const player of this.state) {
-                    const newPosition = message.queue.indexOf(player.name);
-                    player.queuePosition = newPosition > -1 ? newPosition + 1 : null;
-                }
-                this.playersView.render(this.state);
+                this.queue = message.queue;
+                this.updateView();
                 break;
         }
+    }
+
+    private updateView() {
+        const state = this.players.map((player) => {
+            let positon = this.queue.indexOf(player.name);
+            if (positon === -1) {
+                positon = null;
+            } else {
+                positon += 1;
+            }
+            return new PlayerState(player.name, player.isOwner, positon);
+        });
+        this.playersView.render(state);
     }
 }
 
 export class PlayerState {
 
     readonly name: string;
-    isOwner: boolean;
+    readonly isOwner: boolean;
     queuePosition?: number;
 
-    constructor(name: string, isOwner: boolean) {
+    constructor(name: string, isOwner: boolean, queuePosition?: number) {
         this.name = name;
         this.isOwner = isOwner;
+        this.queuePosition = queuePosition;
     }
 }

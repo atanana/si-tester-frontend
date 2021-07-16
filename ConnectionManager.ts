@@ -51,7 +51,7 @@ export interface MessageListener {
     handleMessage(message: ServerMessage);
 }
 
-class Player {
+export class Player {
     readonly name: string;
     readonly isOwner: boolean;
 }
