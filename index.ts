@@ -9,6 +9,8 @@ while (!name) {
     setName(name);
 }
 
+document.getElementById('greeting').textContent = `Хочешь ли ты быть главным, ${name}?`
+
 const connection = new ConnectionManager(name);
 
 document.addEventListener('keydown', (event) => {
@@ -16,6 +18,8 @@ document.addEventListener('keydown', (event) => {
         connection.sendAction();
     }
 });
+
+document.getElementById('makeOwner').addEventListener('click', (_) => connection.sendMakeOwner())
 
 const playersContainer = new PlayersContainer(document.getElementById('playersContainer') as HTMLDivElement);
 const gameManager = new GameManager(playersContainer);

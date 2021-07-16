@@ -14,12 +14,15 @@ export class GameManager implements MessageListener {
     handleMessage(message: ServerMessage) {
         switch (message.messageType) {
             case "ERROR":
-                console.error("Произошла ошибка: ${message.message}!");
+                alert(`Произошла ошибка: ${message.message}!`);
                 break;
             case "PLAYERS_UPDATE":
                 for (const newPlayer of message.players) {
-                    if (!this.state.find((player) => player.name === newPlayer.name)) {
+                    const player = this.state.find((player) => player.name === newPlayer.name);
+                    if (!player) {
                         this.state.push(new PlayerState(newPlayer.name, newPlayer.isOwner));
+                    } else {
+                        player.isOwner = newPlayer.isOwner;
                     }
                 }
                 this.playersView.render(this.state);
@@ -38,7 +41,7 @@ export class GameManager implements MessageListener {
 export class PlayerState {
 
     readonly name: string;
-    readonly isOwner: boolean;
+    isOwner: boolean;
     queuePosition?: number;
 
     constructor(name: string, isOwner: boolean) {

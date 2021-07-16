@@ -2,7 +2,8 @@ import { Websocket, WebsocketBuilder } from 'websocket-ts';
 
 enum Action {
     action = "ACTION",
-    introduce = "INTRODUCE"
+    introduce = "INTRODUCE",
+    makeOwner = "MAKE_OWNER"
 }
 
 export class ConnectionManager {
@@ -31,6 +32,10 @@ export class ConnectionManager {
 
     sendAction() {
         this.send(Action.action);
+    }
+
+    sendMakeOwner() {
+        this.send(Action.makeOwner);
     }
 
     private send(action: Action) {
