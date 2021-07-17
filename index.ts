@@ -11,7 +11,7 @@ while (!name) {
 
 document.getElementById('greeting').textContent = `Хочешь ли ты быть главным, ${name}?`
 
-const connection = new ConnectionManager(name);
+const connection = new ConnectionManager(name, process.env.OVERRIDE_WS_PORT);
 
 document.addEventListener('keydown', (event) => {
     if (event.key === ' ') {

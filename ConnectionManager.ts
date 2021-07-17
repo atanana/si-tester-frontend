@@ -11,9 +11,15 @@ export class ConnectionManager {
     private name: string;
     messageListener?: MessageListener;
 
-    constructor(name: string) {
+    constructor(name: string, port?: string) {
         this.name = name;
-        this.socket = new WebsocketBuilder('ws://localhost:8080/ws')
+
+        let host = location.host;
+        if (port) {
+            host = `${location.hostname}:${port}`;
+        }
+
+        this.socket = new WebsocketBuilder(`ws://${host}/ws`)
             .onOpen((_, event) => { this.send(Action.introduce) })
             .onError((_, event) => { alert('Произошла чудовищная ошибка!') })
             .onClose((_, event) => { alert('Утрачено соединение с сервером!') })
