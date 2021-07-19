@@ -4,12 +4,14 @@ import { ServerMessage } from "./ConnectionManager";
 
 export class GameManager implements MessageListener {
 
-    private playersView: PlayersContainer;
+    private readonly playersView: PlayersContainer;
+    private readonly signal: HTMLAudioElement;
     private players: Player[] = [];
     private queue: string[] = [];
 
-    constructor(playersView: PlayersContainer) {
+    constructor(playersView: PlayersContainer, signal: HTMLAudioElement) {
         this.playersView = playersView;
+        this.signal = signal;
     }
 
     handleMessage(message: ServerMessage) {
@@ -22,6 +24,9 @@ export class GameManager implements MessageListener {
                 this.updateView();
                 break;
             case "QUEUE_UPDATE":
+                if (this.queue.length === 0 && message.queue.length > 0) {
+                    this.signal.play();
+                }
                 this.queue = message.queue;
                 this.updateView();
                 break;

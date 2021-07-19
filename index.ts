@@ -9,7 +9,7 @@ while (!name) {
     setName(name);
 }
 
-document.getElementById('greeting').textContent = `Хочешь ли ты быть главным, ${name}?`
+document.getElementById('greeting').textContent = `Хочешь ли ты быть главным, ${name}?`;
 
 const connection = new ConnectionManager(name, process.env.OVERRIDE_WS_PORT);
 
@@ -22,5 +22,6 @@ document.addEventListener('keydown', (event) => {
 document.getElementById('makeOwner').addEventListener('click', (_) => connection.sendMakeOwner())
 
 const playersContainer = new PlayersContainer(document.getElementById('playersContainer') as HTMLDivElement);
-const gameManager = new GameManager(playersContainer);
+const signal = document.getElementById('signal') as HTMLAudioElement;
+const gameManager = new GameManager(playersContainer, signal);
 connection.messageListener = gameManager;
