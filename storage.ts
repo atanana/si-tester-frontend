@@ -9,3 +9,7 @@ export function getName() {
 export function setName(name: string) {
     storage.setItem(KEY_NAME, name)
 }
+
+export function clearName() {
+    storage.removeItem(KEY_NAME);
+}

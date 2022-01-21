@@ -1,4 +1,4 @@
-import { getName, setName } from "./storage";
+import { getName, setName, clearName } from "./storage";
 import { ConnectionManager } from "./ConnectionManager";
 import { PlayersContainer } from "./PlayersContainer";
 import { GameManager } from "./GameManager";
@@ -18,6 +18,13 @@ document.addEventListener('keydown', (event) => {
         connection.sendAction();
     }
 });
+
+const changeNameButton = document.getElementById('changeName');
+changeNameButton.textContent = `Я не ${name}!`;
+changeNameButton.addEventListener('click', (_ => {
+    clearName();
+    document.location.reload();
+}));
 
 document.getElementById('makeOwner').addEventListener('click', (_) => connection.sendMakeOwner())
 
